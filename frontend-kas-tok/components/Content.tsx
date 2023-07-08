@@ -44,15 +44,6 @@ export default function Content() {
                 necessitatibus obcaecati molestias voluptatum.{" "}
               </p>
             </li>
-            <li className="pt-9">
-              <h3 className="font-semibold text-sm mb-3">User Name</h3>
-              <p className="text-sm">
-                {" "}
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
-                similique harum recusandae illo modi facilis ipsa assumenda
-                necessitatibus obcaecati molestias voluptatum.{" "}
-              </p>
-            </li>
           </ul>
         </li>
       </ul>
