@@ -1,6 +1,6 @@
 export default function SideBar() {
   return (
-    <div className="border-r-2 border-slate-200 basis-1/4">
+    <div className="border-r-2 border-slate-200 basis-1/4 pl-7 xl:pl-0 absolute md:relative bg-white md:bg-transparent h-full w-[70vw] md:w-auto">
       <h3 className="mt-7 font-bold">Home</h3>
       <div className="pt-7">
         <div className="w-[90%] h-[1px] bg-slate-200 mb-5"></div>
