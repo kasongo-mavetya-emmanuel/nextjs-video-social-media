@@ -1,11 +1,27 @@
+import { useCallback } from "react";
+import { WindowsStateIProp } from "@/types";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsSearch, BsThreeDotsVertical } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
+import { useSelector, useDispatch } from "react-redux";
+import { setIsDrawer, setIsMenu } from "../strore/windows";
+
 export default function NavBar() {
+  const isMenu = useSelector((state: WindowsStateIProp) => state.isMenu);
+  const dispatch = useDispatch();
+
+  const toogleDrawer = useCallback(() => {
+    dispatch(setIsDrawer());
+  }, [dispatch]);
+
+  const toogleMenu = useCallback(() => {
+    dispatch(setIsMenu());
+  }, [dispatch]);
+
   return (
     <div className="border-b border-gray w-full py-5 px-7 xl:px-0">
       <div className="max-w-screen-xl flex justify-between mx-auto items-center">
-        <div className="md:hidden">
+        <div className="md:hidden" onClick={toogleDrawer}>
           <AiOutlineMenu size={"2rem"} />
         </div>
         <h2 className="font-bold text-2xl">KasTok</h2>
@@ -27,8 +43,12 @@ export default function NavBar() {
           </button>
         </div>
         <div className="md:hidden relative">
-          <BsThreeDotsVertical />
-          <ul className="bg-white absolute right-0 top-5 px-5 py-3 shadow z-50 flex flex-col gap-3">
+          <BsThreeDotsVertical onClick={toogleMenu} />
+          <ul
+            className={`bg-white absolute right-0 top-5 px-5 py-3 shadow z-50 flex flex-col gap-3 ${
+              isMenu ? "visible" : "invisible"
+            } md:visible`}
+          >
             <li className="text-sm">Login</li>
             <li className="text-sm">Add&nbsp;Post</li>
             <li className="text-sm">Suggested&nbsp;People</li>
