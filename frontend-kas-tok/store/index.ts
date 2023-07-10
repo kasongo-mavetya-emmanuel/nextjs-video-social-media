@@ -1,7 +1,8 @@
 import windowsReducer from "./windows";
 import { configureStore } from "@reduxjs/toolkit";
+import { createWrapper } from "next-redux-wrapper";
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     windows: windowsReducer,
   },
