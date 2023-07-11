@@ -1,11 +1,12 @@
 import windowsReducer from "./windows";
 import { configureStore } from "@reduxjs/toolkit";
-import { createWrapper } from "next-redux-wrapper";
 
 export const store = configureStore({
   reducer: {
     windows: windowsReducer,
   },
 });
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
 
 export default store;

@@ -1,15 +1,14 @@
 "use client";
 import { useCallback } from "react";
-import { WindowsStateIProp } from "@/types";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsSearch, BsThreeDotsVertical } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { useSelector, useDispatch } from "react-redux";
 import { setIsDrawer, setIsMenu } from "../store/windows";
-
+import { AppDispatch, RootState } from "../store";
 export default function NavBar() {
-  const isMenu = useSelector((state: WindowsStateIProp) => state.isMenu);
-  const dispatch = useDispatch();
+  const isMenu = useSelector((state: RootState) => state.windows.isMenu);
+  const dispatch = useDispatch<AppDispatch>();
 
   const toogleDrawer = useCallback(() => {
     dispatch(setIsDrawer());

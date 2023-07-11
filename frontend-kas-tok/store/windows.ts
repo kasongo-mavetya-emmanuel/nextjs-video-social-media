@@ -10,15 +10,21 @@ const windowsSlice = createSlice({
   name: "windows",
   initialState: initialWindowsState,
   reducers: {
-    setIsDrawer({ isDrawer }) {
-      isDrawer = !isDrawer;
+    setIsDrawer(state) {
+      return {
+        ...state,
+        isDrawer: !state.isDrawer,
+      };
     },
-    setIsMenu({ isMenu }) {
-      isMenu = !isMenu;
+    setIsMenu(state) {
+      return {
+        ...state,
+        isMenu: !state.isMenu,
+      };
     },
   },
 });
 
-export const { setIsDrawer, setIsMenu }: any = windowsSlice.reducer;
+export const { setIsDrawer, setIsMenu }: any = windowsSlice.actions;
 
 export default windowsSlice.reducer;

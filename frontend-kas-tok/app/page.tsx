@@ -1,6 +1,6 @@
 import { SideBar, Content, People, Home } from "../components";
 
-export default function HomeRoute() {
+export default function RootRoute() {
   return (
     <Home>
       <SideBar />
