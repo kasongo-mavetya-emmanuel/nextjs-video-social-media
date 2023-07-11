@@ -10,7 +10,6 @@ export default function Profile({
   params: { contentType: string[] };
 }) {
   const { contentType } = params;
-  console.log(params);
   return (
     <Home>
       <SideBar />

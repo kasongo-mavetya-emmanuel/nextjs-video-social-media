@@ -7,14 +7,14 @@ export default function NewPost() {
   return (
     <Home>
       <div className="w-full h-full overflow-scroll md:overflow-hidden">
-        <div className="px-11 py-7">
+        <div className="py-7 pl-11 xl:pl-0">
           <FaArrowLeft size={"1.6rem"} />
         </div>
         <div
-          className="flex w-full h-full gap-11 md:gap-24 items-center justify-center flex-col md:flex-row 
-       pt-[20vh] md:pt-0 px-11 xl:px-0"
+          className="flex w-full gap-11 md:gap-24 flex-col md:flex-row 
+       px-11 xl:px-0 items-center"
         >
-          <div className="basis-1/3 h-full flex flex-col justify-center items-center">
+          <div className="basis-1/3">
             <label>
               <div
                 className="flex flex-col justify-center h-[60vh] items-center gap-9 p-7 

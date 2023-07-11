@@ -1,21 +1,18 @@
 "use client";
 import { useCallback } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
-import { BsSearch, BsThreeDotsVertical } from "react-icons/bs";
+import { BsSearch } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
-import { useSelector, useDispatch } from "react-redux";
-import { setIsDrawer, setIsMenu } from "../store/windows";
-import { AppDispatch, RootState } from "../store";
+import { useDispatch } from "react-redux";
+import { setIsDrawer } from "../store/windows";
+import { AppDispatch } from "../store";
+import MobileMenu from "./MobileMenu";
+import WebMenu from "./WebMenu";
 export default function NavBar() {
-  const isMenu = useSelector((state: RootState) => state.windows.isMenu);
   const dispatch = useDispatch<AppDispatch>();
 
   const toogleDrawer = useCallback(() => {
     dispatch(setIsDrawer());
-  }, [dispatch]);
-
-  const toogleMenu = useCallback(() => {
-    dispatch(setIsMenu());
   }, [dispatch]);
 
   return (
@@ -36,25 +33,8 @@ export default function NavBar() {
           />
           <BsSearch />
         </div>
-        <div className="hidden md:block">
-          <button className="flex items-center gap-2 font-semibold border border-gray px-5 py-3">
-            <FcGoogle size={"2rem"} />
-            Google SignIn
-          </button>
-        </div>
-        <div className="md:hidden relative">
-          <BsThreeDotsVertical onClick={toogleMenu} />
-          <ul
-            className={`bg-white absolute right-0 top-5 px-5 py-3 shadow z-50 flex flex-col gap-3 ${
-              isMenu ? "visible" : "invisible"
-            } md:visible`}
-          >
-            <li className="text-sm">Login</li>
-            <li className="text-sm">Add&nbsp;Post</li>
-            <li className="text-sm">Suggested&nbsp;People</li>
-            <li className="text-sm">Profile</li>
-          </ul>
-        </div>
+        <WebMenu />
+        <MobileMenu />
       </div>
 
       <div className="flex items-center border border-gray rounded-full  bg-slate-200 px-5 md:hidden mx-3 mt-3">
