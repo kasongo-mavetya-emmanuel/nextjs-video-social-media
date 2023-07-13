@@ -3,20 +3,18 @@ import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import { createUser } from ".";
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXT_AUTH_SECRET,
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
+      clientId: process.env.NEXT_GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.NEXT_GOOGLE_CLIENT_SECRET as string,
     }),
   ],
   callbacks: {
-    session: ({ session, token, user }) => {
+    session: async ({ session, token, user }) => {
       console.log(session);
       console.log(user);
       console.log("-----------------------------");
@@ -29,12 +27,17 @@ export const authOptions: NextAuthOptions = {
         },
       };
     },
-    jwt: ({ token, user, profile }) => {
-      console.log(user);
-      console.log(profile);
-      console.log("================================");
+    jwt: async ({ token, user, profile }) => {
       if (user) {
         const u = user as unknown as any;
+        const res = await createUser({
+          _type: "user",
+          _id: u.id,
+          name: u.name,
+          email: u.email,
+          image: u.image,
+        });
+        console.log(res);
         return {
           ...token,
           id: u.id,

@@ -1,7 +1,8 @@
 import { useState, useCallback } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, useSession, signOut } from "next-auth/react";
+import { createUser } from "@/lib/utils";
 
 export default function WebMenu() {
   const [toogle, setToogle] = useState(false);
@@ -9,12 +10,21 @@ export default function WebMenu() {
   const toogleHandler = useCallback(() => {
     setToogle((prev) => !prev);
   }, []);
-  const loginHandler = useCallback(() => {
+  const loginHandler = useCallback(async () => {
     signIn("google");
+    // await createUser({
+    //   _id: "12345678987654",
+    //   name: "emma",
+    //   email: "emma@gmail.com",
+    //   image: "wwwwwww",
+    // });
+  }, []);
+  const logoutHandler = useCallback(() => {
+    signOut();
   }, []);
   return (
     <div className="hidden md:block">
-      {status === "authenticated" && (
+      {status === "authenticated" ? (
         <div className="flex gap-7 items-center">
           <button className="flex items-center gap-2 font-semibold border border-gray px-5 py-3">
             <AiOutlinePlus />
@@ -27,20 +37,23 @@ export default function WebMenu() {
             ></div>
             {toogle && (
               <ul className="absolute py-5 px-5 shadow z-50 bg-white flex flex-col gap-3">
-                <li>Logout</li>
+                <li className="cursor-pointer" onClick={logoutHandler}>
+                  Logout
+                </li>
                 <li>Profile</li>
               </ul>
             )}
           </div>
         </div>
+      ) : (
+        <button
+          className="flex items-center gap-2 font-semibold border border-gray px-5 py-3"
+          onClick={loginHandler}
+        >
+          <FcGoogle size={"2rem"} />
+          Google SignIn
+        </button>
       )}
-      <button
-        className="flex items-center gap-2 font-semibold border border-gray px-5 py-3"
-        onClick={loginHandler}
-      >
-        <FcGoogle size={"2rem"} />
-        Google SignIn
-      </button>
     </div>
   );
 }
