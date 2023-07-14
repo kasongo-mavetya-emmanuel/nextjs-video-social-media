@@ -6,7 +6,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { createUser } from ".";
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXT_AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.NEXT_GOOGLE_CLIENT_ID as string,
@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
     session: async ({ session, token, user }) => {
       console.log(session);
       console.log(user);
-      console.log("-----------------------------");
+      console.log("+++++++++++++++++++++");
       return {
         ...session,
         user: {
@@ -37,7 +37,6 @@ export const authOptions: NextAuthOptions = {
           email: u.email,
           image: u.image,
         });
-        console.log(res);
         return {
           ...token,
           id: u.id,

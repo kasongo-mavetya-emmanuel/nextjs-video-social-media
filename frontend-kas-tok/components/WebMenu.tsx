@@ -3,6 +3,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { signIn, useSession, signOut } from "next-auth/react";
 import { createUser } from "@/lib/utils";
+import Link from "next/link";
 
 export default function WebMenu() {
   const [toogle, setToogle] = useState(false);
@@ -22,6 +23,7 @@ export default function WebMenu() {
   const logoutHandler = useCallback(() => {
     signOut();
   }, []);
+
   return (
     <div className="hidden md:block">
       {status === "authenticated" ? (
@@ -40,7 +42,9 @@ export default function WebMenu() {
                 <li className="cursor-pointer" onClick={logoutHandler}>
                   Logout
                 </li>
-                <li>Profile</li>
+                <li className="cursor-pointer">
+                  <Link href={"/newpost"}>Profile</Link>
+                </li>
               </ul>
             )}
           </div>
