@@ -1,5 +1,3 @@
-"use client";
-import { headers } from "next/headers";
 import { toast } from "react-hot-toast";
 import { BiSolidCloudUpload } from "react-icons/bi";
 
@@ -25,7 +23,8 @@ const VideoPicker = ({ imageDoc, setImageDoc }: any) => {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploadimage`,
           {
-            headers: headers(),
+            method: "POST",
+            body: JSON.stringify(selectedFile),
           }
         );
 
@@ -35,6 +34,7 @@ const VideoPicker = ({ imageDoc, setImageDoc }: any) => {
 
         console.log(res);
         const data = await res.json();
+        console.log("4444444444");
         console.log(data);
 
         setImageDoc(data);
