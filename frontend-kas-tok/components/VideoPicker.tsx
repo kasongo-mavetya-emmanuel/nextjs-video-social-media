@@ -1,10 +1,19 @@
 import { toast } from "react-hot-toast";
 import { BiSolidCloudUpload } from "react-icons/bi";
 
-const VideoPicker = ({ imageDoc, setImageDoc }: any) => {
+const toBase64 = (file: File) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
+
+const VideoPicker = ({ setVideo }: any) => {
   const uploadVideo = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const selectedFile = e.target.files?.[0];
+
     if (
       selectedFile?.type === "video/mp4" ||
       selectedFile?.type === "video/webm" ||
@@ -20,24 +29,22 @@ const VideoPicker = ({ imageDoc, setImageDoc }: any) => {
         console.log(sizeInMB);
         toast.error("your file size is greater than 10mb");
       } else {
+        const result = await toBase64(selectedFile);
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploadimage`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploadvideo`,
           {
             method: "POST",
-            body: JSON.stringify(selectedFile),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ result }),
           }
         );
-
         if (!res.ok) {
           throw new Error("failed to upload video");
         }
-
-        console.log(res);
         const data = await res.json();
         console.log("4444444444");
         console.log(data);
-
-        setImageDoc(data);
+        setVideo(data.publicId);
       }
     } else {
       toast.error("Wrong file format");

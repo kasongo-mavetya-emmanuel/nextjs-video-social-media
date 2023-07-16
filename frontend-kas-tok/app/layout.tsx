@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Providers from "../store/providers";
 import AuthProvider from "@/lib/utils/authProvider";
 import { Toaster } from "react-hot-toast";
+import CloudinaryProvider from "@/lib/utils/cloudinaryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Toaster />
-        <AuthProvider>
-          <Providers>{children}</Providers>
-        </AuthProvider>
+        <CloudinaryProvider>
+          <AuthProvider>
+            <Providers>{children}</Providers>
+          </AuthProvider>
+        </CloudinaryProvider>
       </body>
     </html>
   );
