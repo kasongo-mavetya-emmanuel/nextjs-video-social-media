@@ -2,6 +2,23 @@ import PersonListTile from "./PersonListTile";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { BiComment, BiSolidComment } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
+import { headers } from "next/headers";
+
+const getPosts = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/getposts`, {
+    method: "GET",
+    headers: headers(),
+    body: JSON.stringify({}),
+  });
+  console.log("-----vvvvvvvvvvvvvvvvvvv--------");
+
+  if (!res.ok) {
+    throw new Error("failed to load data");
+  }
+  const data = await res.json();
+  console.log(data);
+  return data;
+};
 
 export default function Content() {
   return (
