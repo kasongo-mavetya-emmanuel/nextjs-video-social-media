@@ -13,12 +13,13 @@ export async function POST(req: Request) {
   console.log("1111111111111111111111111");
   if (session) {
     const body: any = await req.json();
-    console.log("1111111111111111111111111");
-    console.log(body);
 
     const doc = await cloudinary.uploader.upload(body.result, {
       resource_type: "video",
+      timeout: 200000,
     });
+    console.log("1111111111111111111111111");
+
     console.log(doc);
     return new Response(JSON.stringify({ publicId: doc.public_id }), {
       status: 200,

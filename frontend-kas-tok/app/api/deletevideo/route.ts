@@ -18,11 +18,11 @@ export async function POST(req: Request) {
 
     const doc = await cloudinary.uploader.destroy(body.publicId, {
       resource_type: "video",
-      type: "authenticated",
+      // type: "authenticated",
       invalidate: true,
     });
     console.log(doc);
-    return new Response(JSON.stringify({ message: "successfully deleted" }), {
+    return new Response(JSON.stringify(doc), {
       status: 200,
     });
   }

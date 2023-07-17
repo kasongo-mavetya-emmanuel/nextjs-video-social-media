@@ -22,7 +22,7 @@ export default async function NewPostPage() {
 
   return (
     <Home>
-      <NewPost />
+      <NewPost user={data[0]} />
     </Home>
   );
 }
