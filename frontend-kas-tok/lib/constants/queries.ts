@@ -1,44 +1,55 @@
-export const getUserByEmail = (email: string) => {
-  const query = `*[_type=='user' && email=='${email}']{
-        _id,
-        email,
-        image,
-        name,
-        followers
-    }`;
-
-  return query;
-};
-
 export const getPosts = (topic: string) => {
   let query;
+
   if (topic) {
     query = `*[_type=='post' && topic=='${topic}']{
+      _id,
       caption,
       video,
       topic,
       userId,
       postedBy->{
+        _id,
         image,
         name,
         followers[]
       },
       likes[],
-      comments[],
+      comments[]{
+        _key,
+        postedBy->{
+          _id,
+          image,
+          name,
+          followers[]
+        },
+        comment
+      },
     }`;
   } else {
     query = `*[_type=='post']{
+      _id,
       caption,
       video,
       topic,
       userId,
       postedBy->{
+        _id,
         image,
         name,
         followers[]
       },
       likes[],
-      comments[],
+      comments[]{
+        _key,
+        postedBy->{
+          _id,
+          image,
+          name,
+          followers[]
+        },
+        comment
+      },
     }`;
   }
   return query;

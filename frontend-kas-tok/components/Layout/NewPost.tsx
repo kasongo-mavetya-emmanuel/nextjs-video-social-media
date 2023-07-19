@@ -3,21 +3,28 @@ import { FaArrowLeft } from "react-icons/fa";
 import VideoPicker from "../VideoPicker";
 import NewPostForm from "../NewPostForm";
 import { useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 import { Video } from "cloudinary-react";
 import { AiFillDelete } from "react-icons/ai";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 
-export default function NewPost({ user }: any) {
+export default function NewPost() {
   const [video, setVideo] = useState("");
   const [caption, setCaption] = useState("");
   const [topic, setTopic] = useState("development");
   const videoRef = useRef();
+  const { data: session } = useSession();
 
   const postHandler = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!video || !caption || !topic) {
       toast.error("fields required");
+      return;
+    }
+
+    if (!session) {
+      toast.error("Login Please");
       return;
     }
 
@@ -28,9 +35,9 @@ export default function NewPost({ user }: any) {
       topic: topic,
       postedBy: {
         _type: "postedBy",
-        _ref: user._id,
+        _ref: session.user.id,
       },
-      userId: user._id,
+      userId: session.user.id,
     };
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/newpost`, {

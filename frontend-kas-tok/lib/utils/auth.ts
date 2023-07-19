@@ -15,9 +15,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     session: async ({ session, token, user }) => {
-      console.log(session);
-      console.log(user);
-      console.log("+++++++++++++++++++++");
       return {
         ...session,
         user: {
@@ -30,7 +27,7 @@ export const authOptions: NextAuthOptions = {
     jwt: async ({ token, user, profile }) => {
       if (user) {
         const u = user as unknown as any;
-        const res = await createUser({
+        await createUser({
           _type: "user",
           _id: u.id,
           name: u.name,

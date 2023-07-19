@@ -30,10 +30,10 @@ export default function WebMenu() {
           </Link>
           <div className="relative">
             <div
-              className="w-[4rem] h-[4rem] bg-slate-200 rounded-full"
+              className="w-[4rem] h-[4rem] bg-slate-200 rounded-full relative overflow-hidden"
               onClick={toogleHandler}
             >
-              <Image src={`${session.user?.image}`} alt={"profile"} />
+              <Image src={`${session.user?.image}`} alt={"profile"} fill />
             </div>
             {toogle && (
               <ul className="absolute py-5 px-5 shadow z-50 bg-white flex flex-col gap-3">

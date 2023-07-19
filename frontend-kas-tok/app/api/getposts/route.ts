@@ -1,21 +1,18 @@
 import { getPosts } from "@/lib/constants/queries";
-import { authOptions } from "@/lib/utils/auth";
 import { client } from "@/lib/utils/client";
-import { getServerSession } from "next-auth";
 
 export async function GET(req: Request) {
-  const session = await getServerSession(authOptions);
+  try {
+    const { searchParams } = new URL(req.url);
+    const topic = searchParams.get("topic");
+    console.log(typeof topic);
 
-  console.log("tttttttttt");
-
-  if (session) {
-    const topic = await req.json();
-    console.log(topic);
-
-    const posts = await client.fetch(getPosts(topic));
+    const posts = await client.fetch(getPosts(topic === "null" ? "" : topic!));
     return new Response(JSON.stringify(posts), {
       status: 200,
     });
+  } catch (e) {
+    console.log(e);
+    return new Response("", { status: 400 });
   }
-  return new Response("", { status: 400 });
 }

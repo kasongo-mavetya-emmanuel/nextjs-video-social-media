@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { BiSolidCloudUpload } from "react-icons/bi";
 
@@ -10,8 +11,14 @@ const toBase64 = (file: File) =>
   });
 
 const VideoPicker = ({ setVideo }: any) => {
+  const { data: session } = useSession();
+
   const uploadVideo = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
+    if (!session) {
+      toast.error("Login Please");
+      return;
+    }
     const selectedFile = e.target.files?.[0];
 
     if (
