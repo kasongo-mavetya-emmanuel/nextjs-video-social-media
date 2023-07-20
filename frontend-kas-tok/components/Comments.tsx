@@ -4,10 +4,12 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useState, useCallback } from "react";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const Comments = ({ post }: { post: Post }) => {
   const [comment, setComment] = useState("");
   const { data: session } = useSession();
+  const router = useRouter();
 
   const submitComment = useCallback(async () => {
     if (!session) {
@@ -40,10 +42,11 @@ const Comments = ({ post }: { post: Post }) => {
     if (res.status > 400) {
       toast.error("failed to add comment");
     }
-    console.log("3333333======33");
-    console.log(res);
+
+    toast.loading("wait for the refresh");
     setComment("");
     toast.success("success");
+
     window.location.reload();
   }, [comment, post._id, session]);
 

@@ -9,12 +9,10 @@ const getPosts = async (topic: string) => {
   const res = await axios(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/getposts?topic=${topic}`
   );
-  console.log("-----vvvvvvvvvvvvvvvvvvv--------");
 
   if (res.status >= 400) {
     throw new Error("failed to load data");
   }
-  console.log(res);
   return res.data;
 };
 
@@ -27,6 +25,7 @@ export default function Content() {
     setLoading(true);
     setPosts([]);
     getPosts(`${topic}`).then((res: []) => {
+      console.log("ooooo-oooooo");
       console.log(res);
       setPosts(res);
       setLoading(false);
