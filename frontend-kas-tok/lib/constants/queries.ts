@@ -14,7 +14,7 @@ export const getPosts = (topic: string) => {
         name,
         followers[]
       },
-      likes[],
+      likes[]->,
       comments[]{
         _key,
         postedBy->{
@@ -39,7 +39,10 @@ export const getPosts = (topic: string) => {
         name,
         followers[]
       },
-      likes[],
+      likes[]{
+        _key,
+        user->
+      },
       comments[]{
         _key,
         postedBy->{

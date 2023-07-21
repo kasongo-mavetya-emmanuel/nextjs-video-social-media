@@ -14,7 +14,7 @@ export interface Post {
   video: string;
   userId: string;
   postedBy: PostedBy;
-  likes: Array<PostedBy>;
+  likes: Array<Like>;
   comments: Array<Comment>;
 }
 
@@ -29,4 +29,9 @@ export interface Comment {
   _key: string;
   postedBy: PostedBy;
   comment: string;
+}
+
+export interface Like {
+  _key: string;
+  user: PostedBy;
 }

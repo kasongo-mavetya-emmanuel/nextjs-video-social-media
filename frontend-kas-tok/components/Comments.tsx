@@ -43,7 +43,6 @@ const Comments = ({ post }: { post: Post }) => {
       toast.error("failed to add comment");
     }
 
-    toast.loading("wait for the refresh");
     setComment("");
     toast.success("success");
 

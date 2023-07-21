@@ -1,9 +1,9 @@
 "use client";
-import { AiFillHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import PersonListTile from "./PersonListTile";
 import { BiComment } from "react-icons/bi";
 import Comments from "./Comments";
-import { Post } from "@/types";
+import { Like, Post } from "@/types";
 import { useCallback, useState } from "react";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
@@ -12,6 +12,10 @@ import axios from "axios";
 const PostItem = ({ post }: { post: Post }) => {
   const [toogleComment, setToogleComment] = useState(false);
   const { data: session } = useSession();
+  let liked: Like | undefined;
+  // if (session) {
+  //   liked = post.likes?.find((item) => item.user._id === session.user.id);
+  // }
 
   const toogleCommentHandler = useCallback(() => {
     setToogleComment((prev) => !prev);
@@ -28,7 +32,8 @@ const PostItem = ({ post }: { post: Post }) => {
       {
         postId: post._id,
         user: {
-          _type: "user",
+          _type: "reference",
+          _ref: session.user.id,
         },
       },
       {
@@ -38,34 +43,24 @@ const PostItem = ({ post }: { post: Post }) => {
       }
     );
     if (res.status > 400) {
-      toast.error("failed to add comment");
+      toast.error("failed to like");
     }
 
-    toast.loading("wait for the refresh");
-    setComment("");
     toast.success("success");
-
     window.location.reload();
-  }, [session]);
+  }, [post._id, session]);
 
-  const disLikeHandler = useCallback(() => {
+  const disLikeHandler = useCallback(async () => {
     if (!session) {
       toast.error("Login Please");
       return;
     }
 
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/newcomment`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/dislike`,
       {
         postId: post._id,
-        comment: {
-          _type: "comment",
-          postedBy: {
-            _type: "postedBy",
-            _ref: session.user.id,
-          },
-          comment: comment,
-        },
+        likeKey: liked?._key,
       },
       {
         headers: {
@@ -74,15 +69,13 @@ const PostItem = ({ post }: { post: Post }) => {
       }
     );
     if (res.status > 400) {
-      toast.error("failed to add comment");
+      toast.error("failed to dislike");
     }
 
-    toast.loading("wait for the refresh");
-    setComment("");
     toast.success("success");
 
     window.location.reload();
-  }, [session]);
+  }, [liked?._key, post._id, session]);
 
   return (
     <li className="mx-9 my-7">
@@ -91,7 +84,11 @@ const PostItem = ({ post }: { post: Post }) => {
       <div className="w-full h-[50vh] bg-slate-200"></div>
       <div className="flex gap-5 py-3 justify-center">
         <div className="flex gap-[0.2rem] items-center">
-          <AiFillHeart size={"1.8rem"} />
+          {/* {liked ? (
+            <AiFillHeart size={"1.8rem"} onClick={disLikeHandler} />
+          ) : (
+            <AiOutlineHeart size={"1.8rem"} onClick={likeHandler} />
+          )} */}
           <p className="text-sm">{post.likes?.length ?? "0"}</p>
         </div>
         <div className="flex gap-[0.2rem] items-center">
