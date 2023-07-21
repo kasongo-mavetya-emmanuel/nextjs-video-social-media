@@ -22,7 +22,7 @@ export interface PostedBy {
   _id;
   image: string;
   name: string;
-  followers: Array;
+  followers: Array<Like>;
 }
 
 export interface Comment {

@@ -1,8 +1,76 @@
-import { PostedBy } from "@/types";
+"use client";
+import { Like, PostedBy } from "@/types";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useCallback } from "react";
+import toast from "react-hot-toast";
 
 export default function PersonListTile({ user }: { user: PostedBy }) {
-  console.log(user);
+  const { data: session } = useSession();
+  let currentUser: boolean = false;
+  let following: Like | undefined;
+
+  if (session) {
+    currentUser = user?._id === session.user.id;
+    following = user?.followers?.find((item) => item._id === session.user.id);
+  }
+
+  const followHandler = useCallback(async () => {
+    if (!session) {
+      toast.error("Login Please");
+      return;
+    }
+
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/follow`,
+      {
+        userId: user._id,
+        followingUser: {
+          _type: "reference",
+          _ref: session.user.id,
+        },
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.status > 400) {
+      toast.error("failed to like");
+    }
+
+    toast.success("success");
+    window.location.reload();
+  }, [session, user?._id]);
+
+  const unFollowHandler = useCallback(async () => {
+    if (!session) {
+      toast.error("Login Please");
+      return;
+    }
+
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/unfollow`,
+      {
+        userId: user._id,
+        followingKey: following?._key,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (res.status > 400) {
+      toast.error("failed to like");
+    }
+
+    toast.success("success");
+    window.location.reload();
+  }, [following?._key, session, user?._id]);
+
   return (
     <div className="flex items-center">
       <div className="flex-1 flex gap-[0.5rem]">
@@ -15,9 +83,14 @@ export default function PersonListTile({ user }: { user: PostedBy }) {
         </div>
       </div>
       <div>
-        <button className="text-xs font-semibold bg-black text-white px-[0.8rem] rounded-full py-[0.5rem]">
-          follow
-        </button>
+        {!currentUser && (
+          <button
+            className="text-xs font-semibold bg-black text-white px-[0.8rem] rounded-full py-[0.5rem]"
+            onClick={following ? unFollowHandler : followHandler}
+          >
+            {following ? "unfollow" : "follow"}
+          </button>
+        )}
       </div>
     </div>
   );

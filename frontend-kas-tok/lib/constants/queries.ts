@@ -1,3 +1,13 @@
+export const fetchUser = (id: string) => {
+  const query = `*[_type=="user" && _id=="${id}"][0]{
+    _id,
+    name,
+    image,
+    followers[]
+  }`;
+  return query;
+};
+
 export const getPosts = (topic: string) => {
   let query;
 
@@ -12,9 +22,15 @@ export const getPosts = (topic: string) => {
         _id,
         image,
         name,
-        followers[]
+        followers[]{
+          _key,
+          _type == 'reference' => @->,
+        },
       },
-      likes[]->,
+      likes[]{
+        _key,
+        _type == 'reference' => @->,
+      },
       comments[]{
         _key,
         postedBy->{
@@ -37,7 +53,10 @@ export const getPosts = (topic: string) => {
         _id,
         image,
         name,
-        followers[]
+        followers[]{
+          _key,
+          _type == 'reference' => @->,
+        },
       },
       likes[]{
         _key,

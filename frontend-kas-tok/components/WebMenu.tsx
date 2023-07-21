@@ -41,7 +41,7 @@ export default function WebMenu() {
                   Logout
                 </li>
                 <li className="cursor-pointer">
-                  <Link href={"/newpost"}>Profile</Link>
+                  <Link href={"/profile"}>Profile</Link>
                 </li>
               </ul>
             )}
