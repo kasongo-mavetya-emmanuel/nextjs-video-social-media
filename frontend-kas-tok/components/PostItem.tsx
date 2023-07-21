@@ -13,9 +13,9 @@ const PostItem = ({ post }: { post: Post }) => {
   const [toogleComment, setToogleComment] = useState(false);
   const { data: session } = useSession();
   let liked: Like | undefined;
-  // if (session) {
-  //   liked = post.likes?.find((item) => item.user._id === session.user.id);
-  // }
+  if (session) {
+    liked = post.likes?.find((item) => item._id === session.user.id);
+  }
 
   const toogleCommentHandler = useCallback(() => {
     setToogleComment((prev) => !prev);
@@ -84,11 +84,11 @@ const PostItem = ({ post }: { post: Post }) => {
       <div className="w-full h-[50vh] bg-slate-200"></div>
       <div className="flex gap-5 py-3 justify-center">
         <div className="flex gap-[0.2rem] items-center">
-          {/* {liked ? (
+          {liked ? (
             <AiFillHeart size={"1.8rem"} onClick={disLikeHandler} />
           ) : (
             <AiOutlineHeart size={"1.8rem"} onClick={likeHandler} />
-          )} */}
+          )}
           <p className="text-sm">{post.likes?.length ?? "0"}</p>
         </div>
         <div className="flex gap-[0.2rem] items-center">

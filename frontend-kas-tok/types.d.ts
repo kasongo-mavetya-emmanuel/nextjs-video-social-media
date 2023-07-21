@@ -33,5 +33,7 @@ export interface Comment {
 
 export interface Like {
   _key: string;
-  user: PostedBy;
+  name: string;
+  _id: string;
+  image: string;
 }

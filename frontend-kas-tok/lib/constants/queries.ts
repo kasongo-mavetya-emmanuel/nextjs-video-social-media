@@ -41,7 +41,7 @@ export const getPosts = (topic: string) => {
       },
       likes[]{
         _key,
-        user->
+        _type == 'reference' => @->,
       },
       comments[]{
         _key,
