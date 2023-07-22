@@ -5,9 +5,11 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const topic = searchParams.get("topic");
-    console.log(typeof topic);
 
     const posts = await client.fetch(getPosts(topic === "null" ? "" : topic!));
+
+    console.log(posts);
+
     return new Response(JSON.stringify(posts), {
       status: 200,
     });

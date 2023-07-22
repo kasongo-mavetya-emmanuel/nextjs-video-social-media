@@ -8,6 +8,16 @@ export const fetchUser = (id: string) => {
   return query;
 };
 
+export const getUsers = () => {
+  const query = `*[_type=="user"] | order(_id) [0...10]{
+    _id,
+    name, 
+    image, 
+    followers[]
+  }`;
+  return query;
+};
+
 export const getPosts = (topic: string) => {
   let query;
 
