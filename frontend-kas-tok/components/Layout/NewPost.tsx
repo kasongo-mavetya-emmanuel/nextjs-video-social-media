@@ -8,6 +8,7 @@ import { Video } from "cloudinary-react";
 import { AiFillDelete } from "react-icons/ai";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
+import { fetchData } from "@/lib/utils/dataFetcher";
 
 export default function NewPost() {
   const [video, setVideo] = useState("");
@@ -40,18 +41,14 @@ export default function NewPost() {
       userId: session.user.id,
     };
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/newpost`, {
+    const res = fetchData(`${process.env.NEXT_PUBLIC_BASE_URL}/api/newpost`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(post),
-    });
-    if (!res.ok) {
-      throw new Error("failed to upload video");
-    }
-    const data = await res.json();
-    console.log("ccccccccc");
-    console.log(data);
-    toast.success(data.message);
+    }).read();
+
+    console.log(res);
+    // toast.success(data.message);
     setCaption("");
     setVideo("");
   };

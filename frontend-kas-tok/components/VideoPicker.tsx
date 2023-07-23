@@ -1,3 +1,4 @@
+import { fetchData } from "@/lib/utils/dataFetcher";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { BiSolidCloudUpload } from "react-icons/bi";
@@ -37,21 +38,18 @@ const VideoPicker = ({ setVideo }: any) => {
         toast.error("your file size is greater than 10mb");
       } else {
         const result = await toBase64(selectedFile);
-        const res = await fetch(
+        const res = fetchData(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploadvideo`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ result }),
           }
-        );
-        if (!res.ok) {
-          throw new Error("failed to upload video");
-        }
-        const data = await res.json();
+        ).read();
+
         console.log("4444444444");
-        console.log(data);
-        setVideo(data.publicId);
+        console.log(res);
+        // setVideo(res.publicId);
       }
     } else {
       toast.error("Wrong file format");
