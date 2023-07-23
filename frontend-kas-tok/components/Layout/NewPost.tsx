@@ -8,7 +8,7 @@ import { Video } from "cloudinary-react";
 import { AiFillDelete } from "react-icons/ai";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
-import { fetchData } from "@/lib/utils/dataFetcher";
+import CircularProgressBar from "../CircularProgressBar";
 
 export default function NewPost() {
   const [video, setVideo] = useState("");
@@ -16,6 +16,8 @@ export default function NewPost() {
   const [topic, setTopic] = useState("development");
   const videoRef = useRef();
   const { data: session } = useSession();
+  const [loadingvid, setLoadingVid] = useState(false);
+  const [loadingPost, setLoadingPost] = useState(false);
 
   const postHandler = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,6 +31,8 @@ export default function NewPost() {
       return;
     }
 
+    setLoadingPost(true);
+
     const post = {
       _type: "post",
       video: video,
@@ -41,19 +45,27 @@ export default function NewPost() {
       userId: session.user.id,
     };
 
-    const res = fetchData(`${process.env.NEXT_PUBLIC_BASE_URL}/api/newpost`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/newpost`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(post),
-    }).read();
+    });
+    if (!res.ok) {
+      setLoadingPost(false);
 
-    console.log(res);
-    // toast.success(data.message);
+      toast.error("failed to post");
+    }
+    const data = await res.json();
+    console.log("ccccccccc");
+    console.log(data);
+    toast.success(data.message);
     setCaption("");
     setVideo("");
+    setLoadingPost(false);
   };
 
   const deleteVideo = async () => {
+    setLoadingPost(true);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/deletevideo`,
       {
@@ -63,12 +75,14 @@ export default function NewPost() {
       }
     );
     if (!res.ok) {
-      throw new Error("failed to delete video");
+      setLoadingPost(false);
+      toast.error("failed to delete");
     }
     const data = await res.json();
     console.log("ccccccccc");
     console.log(data);
     toast.success(data.result);
+    setLoadingPost(false);
     setVideo("");
   };
 
@@ -83,23 +97,37 @@ export default function NewPost() {
         className="flex w-full gap-11 md:gap-24 flex-col md:flex-row 
        px-11 xl:px-0 items-center"
       >
-        <div className="basis-1/3">
-          {video ? (
-            <div className="w-full bg-[#f7f7f7]">
-              <Video
-                publicId={`${video}`}
-                width="100%"
-                controls
-                innerref={videoRef}
-              />
-              <div className="text-end px-3 py-3 w-full flex justify-end">
-                <AiFillDelete color="red" size={"2rem"} onClick={deleteVideo} />
+        {loadingvid ? (
+          <div className="basis-1/3 flex justify-center">
+            <CircularProgressBar />
+          </div>
+        ) : (
+          <div className="basis-1/3">
+            {video ? (
+              <div className="w-full bg-[#f7f7f7]">
+                <Video
+                  publicId={`${video}`}
+                  width="100%"
+                  controls
+                  innerref={videoRef}
+                />
+                <div className="text-end px-3 py-3 w-full flex justify-end">
+                  <AiFillDelete
+                    color="red"
+                    size={"2rem"}
+                    onClick={deleteVideo}
+                  />
+                </div>
               </div>
-            </div>
-          ) : (
-            <VideoPicker video={video} setVideo={setVideo} />
-          )}
-        </div>
+            ) : (
+              <VideoPicker
+                video={video}
+                setVideo={setVideo}
+                setLoadingVid={setLoadingVid}
+              />
+            )}
+          </div>
+        )}
 
         <NewPostForm
           postMethod={postHandler}
@@ -107,6 +135,7 @@ export default function NewPost() {
           caption={caption}
           topic={topic}
           setTopic={setTopic}
+          loadingPost={loadingPost}
         />
       </div>
     </div>

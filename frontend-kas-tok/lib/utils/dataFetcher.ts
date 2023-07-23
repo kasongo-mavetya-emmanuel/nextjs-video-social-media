@@ -2,12 +2,7 @@ import axios from "axios";
 import wrapPromise from "../api/wrapPromise";
 
 export function fetchData(url: string, options: object) {
-  const promise = fetch(url, options)
-    .then((res) => res.json())
-    .then((res) => {
-      console.log("ccccccccccccc", res);
-      return res.data;
-    });
+  const promise = fetch(url, options).then((res) => res.json());
 
   return wrapPromise(promise);
 }

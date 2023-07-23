@@ -1,4 +1,3 @@
-import { fetchData } from "@/lib/utils/dataFetcher";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { BiSolidCloudUpload } from "react-icons/bi";
@@ -11,7 +10,7 @@ const toBase64 = (file: File) =>
     reader.onerror = reject;
   });
 
-const VideoPicker = ({ setVideo }: any) => {
+const VideoPicker = ({ setVideo, setLoadingVid }: any) => {
   const { data: session } = useSession();
 
   const uploadVideo = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,6 +28,7 @@ const VideoPicker = ({ setVideo }: any) => {
       selectedFile?.type === "video/mpeg" ||
       selectedFile?.type === "video/ogg"
     ) {
+      setLoadingVid(true);
       const sizeInMB = parseFloat(
         (selectedFile.size / (1024 * 1024)).toFixed(2)
       );
@@ -38,18 +38,24 @@ const VideoPicker = ({ setVideo }: any) => {
         toast.error("your file size is greater than 10mb");
       } else {
         const result = await toBase64(selectedFile);
-        const res = fetchData(
+        const res = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploadvideo`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ result }),
           }
-        ).read();
+        );
+        if (!res.ok) {
+          setLoadingVid(false);
 
+          toast.error("failed to upload");
+        }
+        const data = await res.json();
         console.log("4444444444");
-        console.log(res);
-        // setVideo(res.publicId);
+        console.log(data);
+        setVideo(data.publicId);
+        setLoadingVid(false);
       }
     } else {
       toast.error("Wrong file format");

@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { signIn, useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
+import CircularProgressBar from "./CircularProgressBar";
 
 export default function WebMenu() {
   const [toogle, setToogle] = useState(false);
@@ -46,6 +47,10 @@ export default function WebMenu() {
               </ul>
             )}
           </div>
+        </div>
+      ) : status === "loading" ? (
+        <div>
+          <CircularProgressBar />
         </div>
       ) : (
         <button

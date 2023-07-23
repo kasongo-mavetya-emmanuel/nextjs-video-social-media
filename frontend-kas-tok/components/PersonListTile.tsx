@@ -3,11 +3,13 @@ import { Like, PostedBy } from "@/types";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
+import CircularProgressBar from "./CircularProgressBar";
 
 export default function PersonListTile({ user }: { user: PostedBy }) {
   const { data: session } = useSession();
+  const [loadingFollow, setLoadingFollow] = useState(false);
   let currentUser: boolean = false;
   let following: Like | undefined;
 
@@ -21,6 +23,8 @@ export default function PersonListTile({ user }: { user: PostedBy }) {
       toast.error("Login Please");
       return;
     }
+
+    setLoadingFollow(true);
 
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/follow`,
@@ -38,10 +42,14 @@ export default function PersonListTile({ user }: { user: PostedBy }) {
       }
     );
     if (res.status > 400) {
+      setLoadingFollow(false);
+
       toast.error("failed to like");
     }
 
     toast.success("success");
+    setLoadingFollow(false);
+
     window.location.reload();
   }, [session, user?._id]);
 
@@ -50,6 +58,8 @@ export default function PersonListTile({ user }: { user: PostedBy }) {
       toast.error("Login Please");
       return;
     }
+
+    setLoadingFollow(true);
 
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/unfollow`,
@@ -64,10 +74,14 @@ export default function PersonListTile({ user }: { user: PostedBy }) {
       }
     );
     if (res.status > 400) {
+      setLoadingFollow(false);
+
       toast.error("failed to like");
     }
 
     toast.success("success");
+    setLoadingFollow(false);
+
     window.location.reload();
   }, [following?._key, session, user?._id]);
 
@@ -82,16 +96,22 @@ export default function PersonListTile({ user }: { user: PostedBy }) {
           <p className="text-xs">{user?.followers?.length ?? "0"} followers</p>
         </div>
       </div>
-      <div>
-        {!currentUser && (
-          <button
-            className="text-xs font-semibold bg-black text-white px-[0.8rem] rounded-full py-[0.5rem]"
-            onClick={following ? unFollowHandler : followHandler}
-          >
-            {following ? "unfollow" : "follow"}
-          </button>
-        )}
-      </div>
+      {loadingFollow ? (
+        <div>
+          <CircularProgressBar />
+        </div>
+      ) : (
+        <div>
+          {!currentUser && (
+            <button
+              className="text-xs font-semibold bg-black text-white px-[0.8rem] rounded-full py-[0.5rem]"
+              onClick={following ? unFollowHandler : followHandler}
+            >
+              {following ? "unfollow" : "follow"}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

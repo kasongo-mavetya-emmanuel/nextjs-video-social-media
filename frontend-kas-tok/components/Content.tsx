@@ -5,6 +5,8 @@ import axios from "axios";
 import { Post } from "@/types";
 import PostItem from "./PostItem";
 import { useSession } from "next-auth/react";
+import CircularProgressBar from "./CircularProgressBar";
+import toast from "react-hot-toast";
 
 const getPosts = async (topic: string) => {
   const res = await axios(
@@ -12,7 +14,7 @@ const getPosts = async (topic: string) => {
   );
 
   if (res.status >= 400) {
-    throw new Error("failed to load data");
+    toast.error("failed to like");
   }
   return res.data;
 };
@@ -73,7 +75,9 @@ export default function Content() {
   return (
     <div className="flex-1 overflow-scroll">
       {loading ? (
-        <p>Loading...</p>
+        <div className="flex justify-center pt-[10vh]">
+          <CircularProgressBar />
+        </div>
       ) : (
         <ul>
           {posts.map((post) => {

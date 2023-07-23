@@ -1,5 +1,6 @@
 import { topics } from "@/lib/constants/constants";
 import { Topic } from "@/types";
+import CircularProgressBar from "./CircularProgressBar";
 
 const NewPostForm = ({
   postMethod,
@@ -7,6 +8,7 @@ const NewPostForm = ({
   topic,
   setTopic,
   setCaption,
+  loadingPost,
 }: any) => {
   return (
     <form
@@ -35,7 +37,7 @@ const NewPostForm = ({
           onChange={(e) => {
             console.log("22222222");
             console.log(e.target.value);
-            // setTopic(e.target.value);
+            setTopic(e.target.value);
           }}
         >
           {topics.map((topic: Topic) => (
@@ -46,17 +48,23 @@ const NewPostForm = ({
         </select>
       </label>
 
-      <div className="flex gap-5">
-        <button className="border border-black py-3 px-5 rounded-sm">
-          Discard
-        </button>
-        <button
-          type="submit"
-          className="border border-black bg-black text-white py-3 px-9 rounded-sm"
-        >
-          Post
-        </button>
-      </div>
+      {loadingPost ? (
+        <div className="flex justify-center">
+          <CircularProgressBar />
+        </div>
+      ) : (
+        <div className="flex gap-5">
+          <button className="border border-black py-3 px-5 rounded-sm">
+            Discard
+          </button>
+          <button
+            type="submit"
+            className="border border-black bg-black text-white py-3 px-9 rounded-sm"
+          >
+            Post
+          </button>
+        </div>
+      )}
     </form>
   );
 };

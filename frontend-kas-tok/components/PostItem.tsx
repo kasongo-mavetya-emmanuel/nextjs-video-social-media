@@ -8,9 +8,11 @@ import { useCallback, useState } from "react";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import CircularProgressBar from "./CircularProgressBar";
 
 const PostItem = ({ post }: { post: Post }) => {
   const [toogleComment, setToogleComment] = useState(false);
+  const [loadingLike, setLoadingLike] = useState(false);
   const { data: session } = useSession();
   let liked: Like | undefined;
   if (session) {
@@ -26,6 +28,8 @@ const PostItem = ({ post }: { post: Post }) => {
       toast.error("Login Please");
       return;
     }
+
+    setLoadingLike(true);
 
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/like`,
@@ -43,10 +47,14 @@ const PostItem = ({ post }: { post: Post }) => {
       }
     );
     if (res.status > 400) {
+      setLoadingLike(false);
+
       toast.error("failed to like");
     }
 
     toast.success("success");
+    setLoadingLike(false);
+
     window.location.reload();
   }, [post._id, session]);
 
@@ -55,6 +63,8 @@ const PostItem = ({ post }: { post: Post }) => {
       toast.error("Login Please");
       return;
     }
+
+    setLoadingLike(true);
 
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/dislike`,
@@ -69,10 +79,13 @@ const PostItem = ({ post }: { post: Post }) => {
       }
     );
     if (res.status > 400) {
+      setLoadingLike(false);
+
       toast.error("failed to dislike");
     }
 
     toast.success("success");
+    setLoadingLike(false);
 
     window.location.reload();
   }, [liked?._key, post._id, session]);
@@ -83,14 +96,20 @@ const PostItem = ({ post }: { post: Post }) => {
       <h2 className="my-[0.8rem]">{post.caption}</h2>
       <div className="w-full h-[50vh] bg-slate-200"></div>
       <div className="flex gap-5 py-3 justify-center">
-        <div className="flex gap-[0.2rem] items-center">
-          {liked ? (
-            <AiFillHeart size={"1.8rem"} onClick={disLikeHandler} />
-          ) : (
-            <AiOutlineHeart size={"1.8rem"} onClick={likeHandler} />
-          )}
-          <p className="text-sm">{post.likes?.length ?? "0"}</p>
-        </div>
+        {loadingLike ? (
+          <div className="flex justify-center">
+            <CircularProgressBar />
+          </div>
+        ) : (
+          <div className="flex gap-[0.2rem] items-center">
+            {liked ? (
+              <AiFillHeart size={"1.8rem"} onClick={disLikeHandler} />
+            ) : (
+              <AiOutlineHeart size={"1.8rem"} onClick={likeHandler} />
+            )}
+            <p className="text-sm">{post.likes?.length ?? "0"}</p>
+          </div>
+        )}
         <div className="flex gap-[0.2rem] items-center">
           <BiComment
             size={"1.8rem"}

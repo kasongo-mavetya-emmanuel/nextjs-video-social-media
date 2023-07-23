@@ -12,19 +12,16 @@ export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
   console.log("1111111111111111111111111");
   if (session) {
-    // const body: any = await req.json();
+    const body: any = await req.json();
 
-    // const doc = await cloudinary.uploader.upload(body.result, {
-    //   resource_type: "video",
-    //   timeout: 200000,
-    // });
-    // console.log("1111111111111111111111111");
+    const doc = await cloudinary.uploader.upload(body.result, {
+      resource_type: "video",
+      timeout: 200000,
+    });
+    console.log("1111111111111111111111111");
 
-    // console.log(doc);
-    // return new Response(JSON.stringify({ publicId: doc.public_id }), {
-    //   status: 200,
-    // });
-    return new Response(JSON.stringify({ message: "fifd giids sdfifff" }), {
+    console.log(doc);
+    return new Response(JSON.stringify({ publicId: doc.public_id }), {
       status: 200,
     });
   }

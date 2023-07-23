@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import PersonListTile from "./PersonListTile";
 import { PostedBy } from "@/types";
-import { Console } from "console";
+import CircularProgressBar from "./CircularProgressBar";
+import toast from "react-hot-toast";
 
 async function getUsers() {
   const res = await fetch(
@@ -13,7 +14,7 @@ async function getUsers() {
   );
 
   if (!res.ok) {
-    throw new Error("failed to load data");
+    toast.error("failed to load");
   }
   const data = await res.json();
 
@@ -41,7 +42,9 @@ export default function People() {
     >
       <h2 className="font-bold">Suggested People</h2>
       {loading ? (
-        <p>loading...</p>
+        <div className="flex justify-center pt-[10vh]">
+          <CircularProgressBar />
+        </div>
       ) : (
         <ul className="pt-7">
           {people?.map((item) => {

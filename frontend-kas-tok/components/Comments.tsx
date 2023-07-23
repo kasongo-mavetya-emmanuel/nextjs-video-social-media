@@ -5,9 +5,12 @@ import { useSession } from "next-auth/react";
 import { useState, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { loadComponents } from "next/dist/server/load-components";
+import CircularProgressBar from "./CircularProgressBar";
 
 const Comments = ({ post }: { post: Post }) => {
   const [comment, setComment] = useState("");
+  const [laodingComment, setoadingComment] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -20,6 +23,8 @@ const Comments = ({ post }: { post: Post }) => {
       toast.error("comment cannot be empty");
       return;
     }
+
+    setoadingComment(true);
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/newcomment`,
       {
@@ -40,11 +45,13 @@ const Comments = ({ post }: { post: Post }) => {
       }
     );
     if (res.status > 400) {
+      setoadingComment(false);
       toast.error("failed to add comment");
     }
 
     setComment("");
     toast.success("success");
+    setoadingComment(false);
 
     window.location.reload();
   }, [comment, post._id, session]);
@@ -61,12 +68,16 @@ const Comments = ({ post }: { post: Post }) => {
           className="flex-1 py-[0.8rem] px-[0.8rem] focus:outline-none border border-slate-200"
         ></textarea>
         <div>
-          <button
-            onClick={submitComment}
-            className="flex gap-[0.5rem] py-3 px-3 text-white bg-black rounded-full items-center text-xs"
-          >
-            Add Comment
-          </button>
+          {laodingComment ? (
+            <CircularProgressBar />
+          ) : (
+            <button
+              onClick={submitComment}
+              className="flex gap-[0.5rem] py-3 px-3 text-white bg-black rounded-full items-center text-xs"
+            >
+              Add Comment
+            </button>
+          )}
         </div>
       </div>
       <ul>
