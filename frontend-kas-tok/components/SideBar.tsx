@@ -17,7 +17,7 @@ export default function SideBar() {
   const topic = searchParams.get("topic");
   return (
     <div
-      className={`border-r-2 border-slate-200 basis-1/4 pl-7 xl:pl-0 absolute ${
+      className={`border-r-2 border-slate-200 basis-1/4  z-50 pl-7 xl:pl-0 absolute ${
         !isDrawer ? "invisible" : "visible"
       } md:visible md:relative bg-white md:bg-transparent h-full w-[70vw] md:w-auto`}
     >

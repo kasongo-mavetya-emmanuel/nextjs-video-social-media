@@ -1,5 +1,5 @@
 "use client";
-import { useCallback } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
@@ -8,12 +8,24 @@ import { setIsDrawer } from "../store/windows";
 import { AppDispatch } from "../store";
 import MobileMenu from "./MobileMenu";
 import WebMenu from "./WebMenu";
+import { useRouter } from "next/navigation";
 export default function NavBar() {
   const dispatch = useDispatch<AppDispatch>();
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   const toogleDrawer = useCallback(() => {
     dispatch(setIsDrawer());
   }, [dispatch]);
+
+  const searchHandler = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      setSearchQuery(e.target.value);
+      router.push(`/?search=${e.target.value}`);
+    },
+    [router]
+  );
 
   return (
     <div className="border-b border-gray w-full py-5 px-7 xl:px-0">
@@ -28,6 +40,8 @@ export default function NavBar() {
             aria-label="Search"
             placeholder="Search"
             type="Search"
+            value={searchQuery}
+            onChange={searchHandler}
             required
             className="px-3 py-3 bg-none bg-transparent focus:outline-none"
           />
@@ -43,6 +57,8 @@ export default function NavBar() {
           aria-label="Search"
           placeholder="Search"
           type="Search"
+          value={searchQuery}
+          onChange={searchHandler}
           required
           className="px-3 py-3 bg-none bg-transparent focus:outline-none flex-1"
         />

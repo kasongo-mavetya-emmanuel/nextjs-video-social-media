@@ -19,58 +19,79 @@ const getPosts = async (topic: string) => {
   return res.data;
 };
 
+const getSearchedPosts = async (search: string) => {
+  const res = await axios(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/searchposts?search=${search}`
+  );
+
+  if (res.status >= 400) {
+    toast.error("failed to like");
+  }
+  return res.data;
+};
+
 export default function Content() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const topic = searchParams.get("topic");
+  const search = searchParams.get("search");
   const pathname = usePathname();
   const { data: session } = useSession();
 
   useEffect(() => {
     setLoading(true);
     setPosts([]);
-    getPosts(`${topic}`).then((res: Post[]) => {
-      console.log("ooooo-oooooo");
-      console.log(res);
-      if (session) {
-        if (pathname === "/profile") {
-          const list = res.filter(
-            (item) => item.postedBy._id === session.user.id
-          );
-          setPosts(list);
-        } else if (pathname === "/profile/liked") {
-          const list = res.filter((item) => {
-            const i = item.likes?.find((l) => l._id === session.user.id);
-            if (i) {
-              return true;
-            } else {
-              return false;
-            }
-          });
-          setPosts(list);
-        } else if (pathname === "/profile/commented") {
-          const list = res.filter((item) => {
-            const i = item.comments?.find(
-              (l) => l.postedBy._id === session.user.id
+    if (search) {
+      getSearchedPosts(`${search}`).then((res: Post[]) => {
+        console.log("ooooo-oooooo");
+        console.log(res);
+        setPosts(res);
+        setLoading(false);
+      });
+    } else {
+      getPosts(`${topic}`).then((res: Post[]) => {
+        console.log("ooooo-oooooo");
+        console.log(res);
+        if (session) {
+          if (pathname === "/profile") {
+            const list = res.filter(
+              (item) => item.postedBy._id === session.user.id
             );
-            if (i) {
-              return true;
-            } else {
-              return false;
-            }
-          });
-          setPosts(list);
+            setPosts(list);
+          } else if (pathname === "/profile/liked") {
+            const list = res.filter((item) => {
+              const i = item.likes?.find((l) => l._id === session.user.id);
+              if (i) {
+                return true;
+              } else {
+                return false;
+              }
+            });
+            setPosts(list);
+          } else if (pathname === "/profile/commented") {
+            const list = res.filter((item) => {
+              const i = item.comments?.find(
+                (l) => l.postedBy._id === session.user.id
+              );
+              if (i) {
+                return true;
+              } else {
+                return false;
+              }
+            });
+            setPosts(list);
+          } else {
+            setPosts(res);
+          }
         } else {
           setPosts(res);
         }
-      } else {
-        setPosts(res);
-      }
-      setLoading(false);
-    });
+        setLoading(false);
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topic, pathname]);
+  }, [topic, pathname, search]);
 
   return (
     <div className="flex-1 overflow-scroll">

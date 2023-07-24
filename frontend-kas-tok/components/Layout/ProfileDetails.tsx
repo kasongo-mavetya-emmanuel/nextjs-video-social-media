@@ -33,7 +33,7 @@ export default function ProfileDetails({
               </div>
               <div>
                 <h1 className="font-bold text-lg">{user?.name}</h1>
-                <p>{user?.followers?.length} followers</p>
+                <p>{user?.followers?.length ?? "0"} followers</p>
               </div>
             </div>
             <ul className="flex gap-5 px-7">

@@ -13,7 +13,10 @@ export const getUsers = () => {
     _id,
     name, 
     image, 
-    followers[]
+    followers[]{
+      _key,
+      _type == 'reference' => @->,
+    }
   }`;
   return query;
 };
@@ -84,5 +87,39 @@ export const getPosts = (topic: string) => {
       },
     }`;
   }
+  return query;
+};
+
+export const searchPosts = (search: string) => {
+  const query = `*[_type=='post' && topic match '${search}*' || caption match '${search}*']{
+      _id,
+      caption,
+      video,
+      topic,
+      userId,
+      postedBy->{
+        _id,
+        image,
+        name,
+        followers[]{
+          _key,
+          _type == 'reference' => @->,
+        },
+      },
+      likes[]{
+        _key,
+        _type == 'reference' => @->,
+      },
+      comments[]{
+        _key,
+        postedBy->{
+          _id,
+          image,
+          name,
+          followers[]
+        },
+        comment
+      },
+    }`;
   return query;
 };

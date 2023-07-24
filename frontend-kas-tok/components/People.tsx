@@ -49,7 +49,7 @@ export default function People() {
         <ul className="pt-7">
           {people?.map((item) => {
             return (
-              <li key={item._id} className="w-full">
+              <li key={item._id} className="w-full mb-3">
                 <PersonListTile user={item} />
               </li>
             );

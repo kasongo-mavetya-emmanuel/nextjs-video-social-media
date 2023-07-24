@@ -71,7 +71,7 @@ const VideoPicker = ({ setVideo, setLoadingVid }: any) => {
         <div className="text-center flex flex-col items-center gap-7">
           <BiSolidCloudUpload size={"4rem"} color="#b7b7b7" />
           <p className="text-slate-400">
-            Recommendations: MP4, MKV, less than 10min
+            Recommendations: MP4, MKV, less than 10mb
           </p>
           <p className="bg-black text-white w-full py-5 rounded-sm cursor-pointer ">
             Select File

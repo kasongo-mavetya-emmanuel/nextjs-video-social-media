@@ -4,16 +4,18 @@ import PersonListTile from "./PersonListTile";
 import { BiComment } from "react-icons/bi";
 import Comments from "./Comments";
 import { Like, Post } from "@/types";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import CircularProgressBar from "./CircularProgressBar";
+import { Video } from "cloudinary-react";
 
 const PostItem = ({ post }: { post: Post }) => {
   const [toogleComment, setToogleComment] = useState(false);
   const [loadingLike, setLoadingLike] = useState(false);
   const { data: session } = useSession();
+  const videoRef = useRef();
   let liked: Like | undefined;
   if (session) {
     liked = post.likes?.find((item) => item._id === session.user.id);
@@ -94,7 +96,14 @@ const PostItem = ({ post }: { post: Post }) => {
     <li className="mx-9 my-7">
       <PersonListTile user={post.postedBy} />
       <h2 className="my-[0.8rem]">{post.caption}</h2>
-      <div className="w-full h-[50vh] bg-slate-200"></div>
+      <div className="w-full bg-slate-200">
+        <Video
+          publicId={`${post?.video}`}
+          width="100%"
+          controls
+          innerref={videoRef}
+        />
+      </div>
       <div className="flex gap-5 py-3 justify-center">
         {loadingLike ? (
           <div className="flex justify-center">
