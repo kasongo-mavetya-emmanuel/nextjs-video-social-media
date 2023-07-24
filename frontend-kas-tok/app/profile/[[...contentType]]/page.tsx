@@ -1,14 +1,13 @@
 import Loading from "@/app/loading";
 import { Content, Home, People, SideBar } from "@/components";
 import ProfileDetails from "@/components/Layout/ProfileDetails";
+import { headers } from "next/headers";
 import { Suspense } from "react";
 
 async function getUserData() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/getuser`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: headers(),
   });
 
   if (!res.ok) {
