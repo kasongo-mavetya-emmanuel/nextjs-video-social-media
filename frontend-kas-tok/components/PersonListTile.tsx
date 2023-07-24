@@ -91,7 +91,7 @@ export default function PersonListTile({ user }: { user: PostedBy }) {
         <div className="relative w-[4rem] h-[4rem] rounded-full bg-slate-200 overflow-hidden">
           {user?.image && <Image src={`${user?.image}`} alt={"profile"} fill />}
         </div>
-        <div className="flex flex-col gap-[0.3rem] justify-center">
+        <div className="flex-1 flex flex-col gap-[0.3rem] justify-center">
           <h4 className="text-xs font-semibold">{user?.name}</h4>
           <p className="text-xs">{user?.followers?.length ?? "0"} followers</p>
         </div>

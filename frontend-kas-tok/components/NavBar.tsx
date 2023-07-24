@@ -48,7 +48,6 @@ export default function NavBar() {
           <BsSearch />
         </div>
         <WebMenu />
-        <MobileMenu />
       </div>
 
       <div className="flex items-center border border-gray rounded-full  bg-slate-200 px-5 md:hidden mx-3 mt-3">

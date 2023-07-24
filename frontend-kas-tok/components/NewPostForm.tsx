@@ -65,6 +65,7 @@ const NewPostForm = ({
           </button>
         </div>
       )}
+      <div className="w-full h-[20vh] md:hidden"></div>
     </form>
   );
 };

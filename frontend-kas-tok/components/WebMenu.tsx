@@ -20,13 +20,13 @@ export default function WebMenu() {
   }, []);
 
   return (
-    <div className="hidden md:block">
+    <div>
       {status === "authenticated" ? (
-        <div className="flex gap-7 items-center">
+        <div className="flex gap-3 md:gap-7 items-center">
           <Link href={"/newpost"}>
             <button className="flex items-center gap-2 font-semibold border border-gray px-5 py-3">
               <AiOutlinePlus />
-              Upload
+              <span className="hidden md:inline-block"> Upload</span>
             </button>
           </Link>
           <div className="relative">
@@ -58,7 +58,7 @@ export default function WebMenu() {
           onClick={loginHandler}
         >
           <FcGoogle size={"2rem"} />
-          Google SignIn
+          <span className="hidden md:inline-block"> Google SignIn</span>
         </button>
       )}
     </div>
