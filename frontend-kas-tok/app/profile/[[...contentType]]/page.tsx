@@ -1,13 +1,14 @@
+import Loading from "@/app/loading";
 import { Content, Home, People, SideBar } from "@/components";
 import ProfileDetails from "@/components/Layout/ProfileDetails";
-import { headers } from "next/headers";
-import Link from "next/link";
 import { Suspense } from "react";
 
 async function getUserData() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/getuser`, {
     method: "GET",
-    headers: headers(),
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
   if (!res.ok) {
@@ -26,7 +27,7 @@ export default async function Profile({
   const userData = await getUserData();
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense fallback={<Loading />}>
       <ProfileDetails contentType={contentType} user={userData} />
     </Suspense>
   );
