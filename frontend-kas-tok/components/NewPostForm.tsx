@@ -35,8 +35,6 @@ const NewPostForm = ({
           placeholder="Select a Topic"
           className="font-normal px-3 py-3 rounded-sm block border border-black w-[50%] outline-none mt-2"
           onChange={(e) => {
-            console.log("22222222");
-            console.log(e.target.value);
             setTopic(e.target.value);
           }}
         >

@@ -56,8 +56,7 @@ export default function NewPost() {
       toast.error("failed to post");
     }
     const data = await res.json();
-    console.log("ccccccccc");
-    console.log(data);
+
     toast.success(data.message);
     setCaption("");
     setVideo("");
@@ -79,8 +78,7 @@ export default function NewPost() {
       toast.error("failed to delete");
     }
     const data = await res.json();
-    console.log("ccccccccc");
-    console.log(data);
+
     toast.success(data.result);
     setLoadingPost(false);
     setVideo("");

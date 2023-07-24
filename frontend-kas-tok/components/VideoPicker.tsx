@@ -32,9 +32,7 @@ const VideoPicker = ({ setVideo, setLoadingVid }: any) => {
       const sizeInMB = parseFloat(
         (selectedFile.size / (1024 * 1024)).toFixed(2)
       );
-      console.log(sizeInMB);
       if (sizeInMB > 10) {
-        console.log(sizeInMB);
         toast.error("your file size is greater than 10mb");
       } else {
         const result = await toBase64(selectedFile);
@@ -52,8 +50,7 @@ const VideoPicker = ({ setVideo, setLoadingVid }: any) => {
           toast.error("failed to upload");
         }
         const data = await res.json();
-        console.log("4444444444");
-        console.log(data);
+
         setVideo(data.publicId);
         setLoadingVid(false);
       }

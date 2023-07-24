@@ -10,18 +10,14 @@ cloudinary.config({
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
-  console.log("3333333333333");
   if (session) {
     const body: any = await req.json();
-    console.log("333333333333333333");
-    console.log(body);
 
     const doc = await cloudinary.uploader.destroy(body.publicId, {
       resource_type: "video",
       // type: "authenticated",
       invalidate: true,
     });
-    console.log(doc);
     return new Response(JSON.stringify(doc), {
       status: 200,
     });

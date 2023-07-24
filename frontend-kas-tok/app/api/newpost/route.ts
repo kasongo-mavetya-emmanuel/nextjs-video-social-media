@@ -5,11 +5,8 @@ import { authOptions } from "@/lib/utils/auth";
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
 
-  console.log("tttttttttt");
-
   if (session) {
     const post = await req.json();
-    console.log(post);
 
     await client.create(post);
     return new Response(JSON.stringify({ message: "post created" }), {

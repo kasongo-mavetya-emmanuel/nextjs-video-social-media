@@ -44,15 +44,11 @@ export default function Content() {
     setPosts([]);
     if (search) {
       getSearchedPosts(`${search}`).then((res: Post[]) => {
-        console.log("ooooo-oooooo");
-        console.log(res);
         setPosts(res);
         setLoading(false);
       });
     } else {
       getPosts(`${topic}`).then((res: Post[]) => {
-        console.log("ooooo-oooooo");
-        console.log(res);
         if (session) {
           if (pathname === "/profile") {
             const list = res.filter(

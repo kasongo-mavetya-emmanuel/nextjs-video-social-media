@@ -10,7 +10,6 @@ cloudinary.config({
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
-  console.log("1111111111111111111111111");
   if (session) {
     const body: any = await req.json();
 
@@ -18,9 +17,7 @@ export async function POST(req: Request) {
       resource_type: "video",
       timeout: 200000,
     });
-    console.log("1111111111111111111111111");
 
-    console.log(doc);
     return new Response(JSON.stringify({ publicId: doc.public_id }), {
       status: 200,
     });

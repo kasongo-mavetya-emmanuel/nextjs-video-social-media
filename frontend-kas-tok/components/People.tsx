@@ -29,8 +29,6 @@ export default function People() {
     setLoading(true);
     setPeople([]);
     getUsers().then((res: PostedBy[]) => {
-      console.log("vvvvvbbbbbbvvvvvvvv");
-      console.log(res);
       setPeople(res);
       setLoading(false);
     });

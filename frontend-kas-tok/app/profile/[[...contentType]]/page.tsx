@@ -9,13 +9,11 @@ async function getUserData() {
     method: "GET",
     headers: headers(),
   });
-  console.log("------------------------------");
 
   if (!res.ok) {
     throw new Error("failed to load data");
   }
   const data = await res.json();
-  console.log(data);
   return data;
 }
 

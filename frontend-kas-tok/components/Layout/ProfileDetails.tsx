@@ -17,8 +17,6 @@ export default function ProfileDetails({
   contentType: string[];
   user: PostedBy;
 }) {
-  console.log("================");
-  console.log(user);
   return (
     <Home>
       <SideBar />

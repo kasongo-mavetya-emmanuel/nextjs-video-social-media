@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const { postId, user } = await req.json();
-    console.log(postId, user);
 
     await client
       .patch(postId)
