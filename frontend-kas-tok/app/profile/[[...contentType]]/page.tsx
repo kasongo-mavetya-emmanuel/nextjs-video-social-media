@@ -11,9 +11,13 @@ async function getUserData() {
   });
 
   if (!res.ok) {
+    const data = await res.json();
+    console.log("jjjjjjjjjjjj", data);
+
     throw new Error("failed to load data");
   }
   const data = await res.json();
+  console.log("vvvvvvvvvv", data);
   return data;
 }
 

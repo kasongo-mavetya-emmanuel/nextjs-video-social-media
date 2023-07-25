@@ -7,10 +7,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
+    console.log("nnnnnnnnnnnnn", session);
 
     if (session) {
       const user = await client.fetch(fetchUser(session.user.id));
-
+      console.log("bbbbbbbbb", user);
       return NextResponse.json(user);
     }
 
@@ -18,6 +19,7 @@ export async function GET(req: NextRequest) {
       status: 400,
     });
   } catch (e) {
+    console.log("pppppppppp", e);
     return new Response();
   }
 }
