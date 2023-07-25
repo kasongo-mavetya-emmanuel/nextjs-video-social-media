@@ -21,7 +21,7 @@ const getPosts = async (topic: string) => {
 
 const getSearchedPosts = async (search: string) => {
   const res = await axios(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/searchposts/?search=${search}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/searchposts?search=${search}`
   );
   console.log("ooooo", res.data);
 

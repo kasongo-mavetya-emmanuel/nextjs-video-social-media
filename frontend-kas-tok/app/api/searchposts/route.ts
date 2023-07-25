@@ -1,10 +1,11 @@
-import { getPosts, searchPosts } from "@/lib/constants/queries";
+import { searchPosts } from "@/lib/constants/queries";
 import { client } from "@/lib/utils/client";
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get("search");
+    console.log("oooooooooo", searchParams);
 
     console.log("oooooooooo", search);
 
