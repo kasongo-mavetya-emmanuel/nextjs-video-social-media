@@ -23,7 +23,7 @@ const getSearchedPosts = async (search: string) => {
   const res = await axios(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/searchposts/?search=${search}`
   );
-  console.log("ooooo", res);
+  console.log("ooooo", res.data);
 
   if (res.status >= 400) {
     toast.error("failed to like");
