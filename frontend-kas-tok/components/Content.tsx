@@ -86,6 +86,8 @@ export default function Content() {
         setLoading(false);
       });
     }
+
+    console.log("ccczzzzz", posts);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topic, pathname, search]);
 
@@ -97,7 +99,7 @@ export default function Content() {
         </div>
       ) : (
         <ul>
-          {posts.map((post) => {
+          {posts?.map((post) => {
             return <PostItem key={post._id} post={post} />;
           })}
         </ul>
