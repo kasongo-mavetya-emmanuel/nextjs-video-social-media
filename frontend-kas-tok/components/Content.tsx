@@ -21,7 +21,7 @@ const getPosts = async (topic: string) => {
 
 const getSearchedPosts = async (search: string) => {
   const res = await axios(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/searchposts?search=${search}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/searchposts/?search=${search}`
   );
 
   if (res.status >= 400) {
@@ -44,6 +44,7 @@ export default function Content() {
     setPosts([]);
     if (search) {
       getSearchedPosts(`${search}`).then((res: Post[]) => {
+        console.log("bbbbbbbcccc", res);
         setPosts(res);
         setLoading(false);
       });
