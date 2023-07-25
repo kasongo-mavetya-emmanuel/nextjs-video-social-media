@@ -5,15 +5,10 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get("search");
-    console.log("oooooooooo", searchParams);
-
-    console.log("oooooooooo", search);
 
     const posts = await client.fetch(
       searchPosts(search === "null" ? "" : search!)
     );
-
-    console.log("mmmmmmmm", posts);
 
     return new Response(JSON.stringify(posts), {
       status: 200,

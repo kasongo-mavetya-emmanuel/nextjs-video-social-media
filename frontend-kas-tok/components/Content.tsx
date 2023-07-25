@@ -19,18 +19,6 @@ const getPosts = async (topic: string) => {
   return res.data;
 };
 
-const getSearchedPosts = async (search: string) => {
-  const res = await axios(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/searchposts?search=${search}`
-  );
-  console.log("ooooo", res.data);
-
-  if (res.status >= 400) {
-    toast.error("failed to like");
-  }
-  return res.data;
-};
-
 export default function Content() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
@@ -39,6 +27,18 @@ export default function Content() {
   const search = searchParams.get("search");
   const pathname = usePathname();
   const { data: session } = useSession();
+
+  const getSearchedPosts = async (search: string) => {
+    const res = await axios(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/searchposts?search=${search}`
+    );
+    console.log("ooooo", res.data);
+
+    if (res.status >= 400) {
+      toast.error("failed to like");
+    }
+    return res.data;
+  };
 
   useEffect(() => {
     setLoading(true);
