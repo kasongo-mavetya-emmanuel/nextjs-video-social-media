@@ -23,7 +23,6 @@ const getSearchedPosts = async (search: string) => {
   const res = await axios(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/searchposts/?search=${search}`
   );
-  console.log("ooooo", res.data);
 
   if (res.status >= 400) {
     toast.error("failed to like");
@@ -45,7 +44,6 @@ export default function Content() {
     setPosts([]);
     if (search) {
       getSearchedPosts(`${search}`).then((res: Post[]) => {
-        console.log("bbbbbbbcccc", res);
         setPosts(res);
         setLoading(false);
       });
@@ -89,8 +87,6 @@ export default function Content() {
       });
     }
 
-    console.log("ccczzzzz", posts);
-    console.log("rrrrrr", typeof posts);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topic, pathname, search]);
 

@@ -8,11 +8,9 @@ import { Suspense } from "react";
 
 async function getUserData() {
   const session = await getServerSession(authOptions);
-  console.log("nnnnnnnnnnnnn", session);
 
   if (session) {
     const user = await client.fetch(fetchUser(session.user.id));
-    console.log("bbbbbbbbb", user);
     return user;
   }
 
