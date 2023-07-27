@@ -1,24 +1,22 @@
 import Loading from "@/app/loading";
-import { Content, Home, People, SideBar } from "@/components";
 import ProfileDetails from "@/components/Layout/ProfileDetails";
-import { headers } from "next/headers";
+import { fetchUser } from "@/lib/constants/queries";
+import { authOptions } from "@/lib/utils/auth";
+import { client } from "@/lib/utils/client";
+import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 
 async function getUserData() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/getuser`, {
-    method: "GET",
-    headers: headers(),
-  });
+  const session = await getServerSession(authOptions);
+  console.log("nnnnnnnnnnnnn", session);
 
-  if (!res.ok) {
-    const data = await res.json();
-    console.log("jjjjjjjjjjjj", data);
-
-    throw new Error("failed to load data");
+  if (session) {
+    const user = await client.fetch(fetchUser(session.user.id));
+    console.log("bbbbbbbbb", user);
+    return user;
   }
-  const data = await res.json();
-  console.log("vvvvvvvvvv", data);
-  return data;
+
+  return null;
 }
 
 export default async function Profile({

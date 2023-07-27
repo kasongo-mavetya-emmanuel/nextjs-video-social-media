@@ -10,8 +10,20 @@ import toast from "react-hot-toast";
 
 const getPosts = async (topic: string) => {
   const res = await axios(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getposts?topic=${topic}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getposts/?topic=${topic}`
   );
+
+  if (res.status >= 400) {
+    toast.error("failed to like");
+  }
+  return res.data;
+};
+
+const getSearchedPosts = async (search: string) => {
+  const res = await axios(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/searchposts/?search=${search}`
+  );
+  console.log("ooooo", res.data);
 
   if (res.status >= 400) {
     toast.error("failed to like");
@@ -27,18 +39,6 @@ export default function Content() {
   const search = searchParams.get("search");
   const pathname = usePathname();
   const { data: session } = useSession();
-
-  const getSearchedPosts = async (search: string) => {
-    const res = await axios(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/searchposts?search=${search}`
-    );
-    console.log("ooooo", res.data);
-
-    if (res.status >= 400) {
-      toast.error("failed to like");
-    }
-    return res.data;
-  };
 
   useEffect(() => {
     setLoading(true);
